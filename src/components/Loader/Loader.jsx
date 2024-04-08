@@ -1,9 +1,9 @@
 import css from './Loader.module.css'
-import { BallTriangle } from 'react-loader-spinner'
+import { Oval } from 'react-loader-spinner'
 
 
-export default function Loader() {
+export default function Loader({isNotAbsolute}) {
     return (
-        <BallTriangle wrapperClass={css.loader} color='#cc002c'/>
+        <Oval wrapperClass={isNotAbsolute ?  css.loader : css.loaderCentred} color='#cc002c' secondaryColor='#cc002c67'/>
     )
 }
