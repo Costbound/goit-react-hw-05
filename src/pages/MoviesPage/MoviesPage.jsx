@@ -1,34 +1,42 @@
 import css from './MoviesPage.module.css'
 import MovieList from '../../components/MovieList/MovieList'
 import Loader from '../../components/Loader/Loader'
-import { useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useNavigate, useSearchParams, Route, Routes } from 'react-router-dom'
 import { fetchSearchMovie } from '../../movies-api'
 
 export default function MoviesPage() {
     const [movies, setMovies] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
+    console.log(searchParams.get("query"))
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         const form = e.currentTarget
-        const searchWord = form.elements.search.value.trim()
-        if (searchWord) {
-            try {
-                setMovies([])
-                setLoading(true)
-                const data = await fetchSearchMovie(searchWord)
-                setMovies(data)
-                navigate(`/movies?query=${searchWord}`)
-            } catch (err) {
-                console.log(err)
-            } finally {
-                setLoading(false)
-            }
-        }
+        setSearchParams({ query: form.elements.search.value.trim() })
         form.reset()
     }
+
+    useEffect(() => {
+        const fetchData = async (searchWord) => {
+            if (searchWord) {
+                try {
+                    setMovies([])
+                    setLoading(true)
+                    const data = await fetchSearchMovie(searchWord)
+                    setMovies(data)
+                    navigate(`/movies?query=${searchWord}`)
+                } catch (err) {
+                    console.log(err)
+                } finally {
+                    setLoading(false)
+                }
+            }
+        }
+        fetchData(searchParams.get('query'))
+    },[searchParams])
 
     return (
         <div className={css.container}>
