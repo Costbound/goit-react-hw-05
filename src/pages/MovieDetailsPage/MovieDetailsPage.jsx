@@ -1,7 +1,7 @@
 import css from './MovieDetailsPage.module.css'
 import Loader from '../../components/Loader/Loader'
-import { useEffect, useState } from 'react'
-import { useParams, Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useEffect, useState, useRef } from 'react'
+import { useParams, Link, Outlet, useLocation } from 'react-router-dom'
 import { fetchDetails, imageBaseUrl } from '../../movies-api'
 
 
@@ -9,9 +9,8 @@ export default function MovieDetailsPage() {
     const [movieData, setMovieData] = useState()
     const [loading, setLoading] = useState(false)
     const { movieId } = useParams()
-    const navigate = useNavigate()
     const location = useLocation()
-    const backHref = location.state.from.pathname + location.state.from.search
+    const backLink = useRef(location.state?.from ?? '/movies')
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,7 +29,7 @@ export default function MovieDetailsPage() {
 
     return (
         <div className={css.contentContainer}>
-            <button className={css.backBtn} onClick={() => {navigate(backHref)}}>← Go back</button>
+            <Link className={css.backLink} to={backLink.current}>← Go back</Link>
             {movieData &&
                 <>
                 <div className={css.infoContainer}>
@@ -49,10 +48,10 @@ export default function MovieDetailsPage() {
                 <h2 className={css.additionalTitle}>Additional information</h2>
                 <ul className={css.additionalList}>
                     <li>
-                        <Link to='cast' state={location.state}>Cast</Link>
+                        <Link to='cast'>Cast</Link>
                     </li>
                     <li>
-                        <Link to='reviews' state={location.state}>Reviews</Link>
+                        <Link to='reviews'>Reviews</Link>
                     </li>
                 </ul>
                 <hr />

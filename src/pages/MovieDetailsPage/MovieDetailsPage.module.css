@@ -1,8 +1,17 @@
 .contentContainer {
     padding: 0 16px 32px 16px;
 }
-.backBtn {
+.backLink {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    width: 150px;
+    padding: 8px 16px;
     margin-bottom: 16px;
+    color: #cc002c;
+    border: 1px solid #cc002c;
+    border-radius: 8px;
 }
 .infoContainer {
     display: flex;

@@ -2,19 +2,20 @@ import css from './MoviesPage.module.css'
 import MovieList from '../../components/MovieList/MovieList'
 import Loader from '../../components/Loader/Loader'
 import { useEffect, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { fetchSearchMovie } from '../../movies-api'
 
 export default function MoviesPage() {
-    const [movies, setMovies] = useState(false)
+    const [movies, setMovies] = useState([])
+    const [isFirstRender, setIsFirstRender] = useState(true)
     const [loading, setLoading] = useState(false)
     const [searchParams, setSearchParams] = useSearchParams()
-    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         const form = e.currentTarget
-        setSearchParams({ query: form.elements.search.value.trim() })
+        const value = form.elements.search.value.trim()
+        value ? setSearchParams({ query: value }) : alert("Search field connot be empty")
         form.reset()
     }
 
@@ -25,8 +26,8 @@ export default function MoviesPage() {
                     setMovies([])
                     setLoading(true)
                     const data = await fetchSearchMovie(searchWord)
+                    if (searchWord) setIsFirstRender(false)
                     setMovies(data)
-                    navigate(`/movies?query=${searchWord}`)
                 } catch (err) {
                     console.log(err)
                 } finally {
@@ -35,15 +36,15 @@ export default function MoviesPage() {
             }
         }
         fetchData(searchParams.get('query'))
-    },[searchParams])
-
+    }, [searchParams])
+    
     return (
         <div className={css.container}>
             <form className={css.form} onSubmit={handleSubmit}>
                 <input className={css.input} type='text' name='search'/>
                 <button type='submit'>Search</button>
             </form>
-            {movies.length < 1 && !loading ?
+            {movies.length < 1 && !loading && !isFirstRender ?
                 <h2>Any movie found by your request</h2> :
                 <MovieList movies={movies} />
             }

@@ -22,7 +22,7 @@ export default function MovieCast() {
             }
         }
         fetchData()
-    }, [])
+    }, [movieId])
     
     return (
         <ul className={css.list}>
@@ -30,7 +30,7 @@ export default function MovieCast() {
                 <li key={id}>
                     <img className={css.img} src={imageBaseUrl + profile_path} alt={name} height='300'/>
                     <h3 className={css.actorName}>{name}</h3>
-                    <p>{`Character: ${character}`}</p>
+                    {character && <p>{`Character: ${character}`}</p>}
                 </li>
             ))}
             {loading && <Loader isNotAbsolute={true} />}
