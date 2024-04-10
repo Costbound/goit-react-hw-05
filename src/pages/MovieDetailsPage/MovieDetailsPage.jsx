@@ -12,7 +12,6 @@ export default function MovieDetailsPage() {
     const navigate = useNavigate()
     const location = useLocation()
     const backHref = location.state.from.pathname + location.state.from.search
-    console.log(backHref)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -29,7 +28,6 @@ export default function MovieDetailsPage() {
         fetchData()
     }, [])
 
-    console.log(location)
     return (
         <div className={css.contentContainer}>
             <button className={css.backBtn} onClick={() => {navigate(backHref)}}>← Go back</button>

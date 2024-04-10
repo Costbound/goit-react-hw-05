@@ -2,7 +2,7 @@ import css from './MoviesPage.module.css'
 import MovieList from '../../components/MovieList/MovieList'
 import Loader from '../../components/Loader/Loader'
 import { useEffect, useState } from 'react'
-import { useNavigate, useSearchParams, Route, Routes } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { fetchSearchMovie } from '../../movies-api'
 
 export default function MoviesPage() {
@@ -10,7 +10,6 @@ export default function MoviesPage() {
     const [loading, setLoading] = useState(false)
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
-    console.log(searchParams.get("query"))
 
     const handleSubmit = async (e) => {
         e.preventDefault()
