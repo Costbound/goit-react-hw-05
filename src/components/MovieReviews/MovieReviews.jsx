@@ -22,7 +22,7 @@ export default function MovieReviews() {
             }
         }
         fetchData()
-    }, [])
+    }, [movieId])
 
     return (
         <>
